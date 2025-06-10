@@ -6,7 +6,6 @@ import { join } from 'path';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { RedisModule } from './common/redis/redis.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { EquipmentModule } from './equipment/equipment.module';
@@ -14,6 +13,8 @@ import { AttendanceModule } from './attendance/attendance.module';
 import { GymPostsModule } from './gym-posts/gym-posts.module';
 import { GymScheduleModule } from './gym-schedule/gym-schedule.module';
 import { GymModule } from './gym/gym.module';
+import { SocialModule } from './social/social.module';
+import { MediaModule } from './media/media.module';
 import { DiscoveryModule, DiscoveryService } from '@nestjs/core';
 import { Equipment } from './entities/equipment.entity';
 import { User } from './entities/user.entity';
@@ -23,13 +24,20 @@ import { Complaint } from './entities/complaint.entity';
 import { ComplaintsModule } from './complaints/complaints.module';
 import { GatePassModule } from './gate-pass/gate-pass.module';
 import { EmailModule } from './email/email.module';
+import { NotificationModule } from './notification/notification.module';
+import { AiAssistantModule } from './ai-assistant/ai-assistant.module';
+import { AiFitnessModule } from './ai-fitness/ai-fitness.module';
+import { MentalWellbeingModule } from './mental-wellbeing/mental-wellbeing.module';
 import { 
   Role, 
   College, 
   Department, 
   DayScholarHosteller, 
   Quota, 
-  GatePass
+  GatePass,
+  SocialPost,
+  Comment,
+  Endorsement
 } from './entities';
 import { SeedModule } from './database/seeds/seed.module';
 
@@ -70,9 +78,11 @@ import { SeedModule } from './database/seeds/seed.module';
       GymPost,
       GymSchedule,
       Complaint,
-      GatePass
+      GatePass,
+      SocialPost,
+      Comment,
+      Endorsement
     ]),
-    RedisModule,
     UsersModule,
     AuthModule,
     EquipmentModule,
@@ -84,6 +94,12 @@ import { SeedModule } from './database/seeds/seed.module';
     ComplaintsModule,
     GatePassModule,
     EmailModule,
+    NotificationModule,
+    SocialModule,
+    MediaModule,
+    AiAssistantModule,
+    AiFitnessModule,
+    MentalWellbeingModule,
   ],
   controllers: [
     AppController
