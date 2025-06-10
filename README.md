@@ -36,6 +36,22 @@ npm install
 1. Set up PostgreSQL database according to .env configuration
 2. The application uses TypeORM with synchronize set to true for development (will create tables automatically)
 
+## Prisma Commands
+
+```bash
+# Generate Prisma Client based on the schema
+npx prisma generate
+
+# Create a new migration and apply it
+npx prisma migrate dev
+
+# Push schema to database without creating migrations
+npx prisma db push
+
+# Open Prisma Studio to browse and manage data
+npx prisma studio
+```
+
 ## Running the Application
 
 ```bash
