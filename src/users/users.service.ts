@@ -9,7 +9,6 @@ import { College } from '../entities/college.entity';
 import { Department } from '../entities/department.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { RedisService } from '../common/redis/redis.service';
 
 @Injectable()
 export class UsersService {
@@ -26,7 +25,6 @@ export class UsersService {
     private readonly collegesRepository: Repository<College>,
     @InjectRepository(Department)
     private readonly departmentsRepository: Repository<Department>,
-    private readonly redisService: RedisService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -56,9 +54,6 @@ export class UsersService {
     // Create new user
     const user = this.usersRepository.create(createUserDto);
     const savedUser = await this.usersRepository.save(user);
-    
-    // Cache user in Redis
-    await this.redisService.set(`user:${savedUser.id}`, this.sanitizeUser(savedUser), 3600); // 1 hour TTL
     
     return this.sanitizeUser(savedUser);
   }
@@ -95,12 +90,6 @@ export class UsersService {
   }
 
   async findOne(id: number): Promise<User> {
-    // Try to get from cache first
-    const cachedUser = await this.redisService.get(`user:${id}`);
-    if (cachedUser) {
-      return cachedUser;
-    }
-
     const user = await this.usersRepository.findOne({ 
       where: { id },
       relations: ['role', 'quota', 'department', 'college', 'dayScholarHosteller'],
@@ -110,9 +99,7 @@ export class UsersService {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
     
-    // Cache for future requests
     const sanitizedUser = this.sanitizeUser(user);
-    await this.redisService.set(`user:${id}`, sanitizedUser, 3600);
     
     return sanitizedUser;
   }
@@ -157,9 +144,7 @@ export class UsersService {
       throw new NotFoundException(`User with ID ${id} not found after update`);
     }
     
-    // Update cache
     const sanitizedUser = this.sanitizeUser(updatedUser);
-    await this.redisService.set(`user:${id}`, sanitizedUser, 3600);
     
     return sanitizedUser;
   }
@@ -170,9 +155,6 @@ export class UsersService {
     if (result.affected === 0) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-    
-    // Remove from cache
-    await this.redisService.del(`user:${id}`);
   }
 
   async findAllStudents(): Promise<User[]> {

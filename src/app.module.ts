@@ -6,7 +6,6 @@ import { join } from 'path';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { RedisModule } from './common/redis/redis.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { EquipmentModule } from './equipment/equipment.module';
@@ -26,6 +25,9 @@ import { ComplaintsModule } from './complaints/complaints.module';
 import { GatePassModule } from './gate-pass/gate-pass.module';
 import { EmailModule } from './email/email.module';
 import { NotificationModule } from './notification/notification.module';
+import { AiAssistantModule } from './ai-assistant/ai-assistant.module';
+import { AiFitnessModule } from './ai-fitness/ai-fitness.module';
+import { MentalWellbeingModule } from './mental-wellbeing/mental-wellbeing.module';
 import { 
   Role, 
   College, 
@@ -81,7 +83,6 @@ import { SeedModule } from './database/seeds/seed.module';
       Comment,
       Endorsement
     ]),
-    RedisModule,
     UsersModule,
     AuthModule,
     EquipmentModule,
@@ -96,6 +97,9 @@ import { SeedModule } from './database/seeds/seed.module';
     NotificationModule,
     SocialModule,
     MediaModule,
+    AiAssistantModule,
+    AiFitnessModule,
+    MentalWellbeingModule,
   ],
   controllers: [
     AppController
